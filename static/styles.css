@@ -1,0 +1,64 @@
+body {
+    font-family: sans-serif;
+    background-color: #f4f6f5;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    background: #f2f5f2;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 12px;
+}
+
+.exchange-box {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.exchange-box label {
+    width: 60px;
+}
+
+.exchange-box input {
+    flex: 1;
+    padding: 6px;
+    font-size: 16px;
+}
+
+.arrow {
+    text-align: center;
+    font-size: 24px;
+    margin: 10px 0;
+}
+
+button {
+    background-color: #b2ef8c;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.flag {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
+    vertical-align: middle;
+}
+
+.error {
+    color: red;
+}
+
+.info {
+    margin-top: 10px;
+}

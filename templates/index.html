@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora de Wise</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/static/refresh.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <h2>Calculadora de transferencias</h2>
+
+        <canvas id="graficoTasa" height="150"></canvas>
+
+        <form method="POST">
+            <div class="exchange-box">
+                <label>USD:</label>
+                <input type="number" name="monto" id="monto" value="{{ request.form.monto or 100 }}" step="0.01" required>
+                <img src="{{ url_for('static', filename='usd.png') }}" alt="USD" class="flag">
+            </div>
+
+            <div class="arrow">⇅</div>
+
+            <div class="exchange-box">
+                <label>CLP:</label>
+                <input type="text" id="clp" disabled value="{% if resultado %}{{ "{:,.0f}".format(resultado.clp) }}{% endif %}">
+                <img src="{{ url_for('static', filename='clp.png') }}" alt="CLP" class="flag">
+            </div>
+
+            {% if resultado %}
+            <div class="info">
+                <p>1 USD = {{ "{:,.3f}".format(resultado.tasa) }} CLP</p>
+                <p>Incluye comisiones: {{ "{:,.2f}".format(resultado.comision) }} USD</p>
+            </div>
+            {% endif %}
+
+            {% if error %}
+            <p class="error">Error: {{ error }}</p>
+            {% endif %}
+
+            <button type="submit">Calcular</button>
+        </form>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('graficoTasa').getContext('2d');
+        const fechas = {{ fechas | tojson }};
+        const tasas = {{ tasas | tojson }};
+
+        const labels = fechas.map((f, i) =>
+            i === fechas.length - 1
+                ? new Date(f).toLocaleString('es-CL') // último: completo
+                : '' // los demás: vacío
+        );
+
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: '1 USD en CLP',
+                    data: tasas,
+                    fill: true,
+                    borderColor: 'green',
+                    backgroundColor: 'rgba(82, 211, 102, 0.2)',
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        ticks: {
+                            callback: function(value) {
+                                return value.toLocaleString('es-CL') + " CLP";
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+
+        // ⏱️ Auto actualización cada 60 segundos
+        setInterval(() => {
+            document.querySelector('form').submit();
+        }, 60000);
+    </script>
+</body>
+</html>
