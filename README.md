@@ -93,6 +93,6 @@ La clave de API **no se debe subir** a GitHub. Por eso, se usa la variable de en
 
 ---
 
-## ✨ Autor
+## ✨ Autor Lorenzo Reyes
 
 Desarrollado para monitorear el tipo de cambio USD → CLP en tiempo real usando Wise.
